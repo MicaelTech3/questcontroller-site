@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>QuestController — Painel Avançado para Meta Quest</title>
+  <title>QuestController — Sistema Profissional de Gestão para Meta Quest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="icon.png" type="image/x-icon">
   <style>
     * {
       margin: 0;
@@ -11,407 +12,949 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0a0e1a;
-      color: #e4e7eb;
-      line-height: 1.7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* Animated gradient background */
-    .bg-gradient {
+    /* Navigation */
+    nav {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
-      z-index: -2;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e5e7eb;
+      z-index: 1000;
+      transition: all 0.3s ease;
     }
 
-    .bg-gradient::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-      animation: rotate 20s linear infinite;
+    nav.scrolled {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
-    @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
     }
 
-    /* Grid pattern overlay */
-    .grid-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      z-index: -1;
-      opacity: 0.5;
+    .logo-nav {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -0.5px;
     }
 
-    /* Header */
-    header {
-      position: relative;
-      padding: 120px 20px 80px;
-      text-align: center;
-      overflow: hidden;
+    .nav-links {
+      display: flex;
+      gap: 35px;
+      list-style: none;
     }
 
-    header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
-      border-radius: 50%;
-      filter: blur(60px);
-      animation: pulse 4s ease-in-out infinite;
+    .nav-links a {
+      color: #4b5563;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      cursor: pointer;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-      50% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
+    .nav-links a:hover {
+      color: #1a1a1a;
     }
 
-    .logo {
+    .nav-cta {
+      padding: 10px 24px;
+      background: #1a1a1a;
+      color: #ffffff !important;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      background: #000000;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 150px 40px 100px;
+      max-width: 1400px;
+      margin: 0 auto;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 600px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-tag {
       display: inline-block;
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      padding: 6px 14px;
+      background: #f3f4f6;
       border-radius: 20px;
-      margin-bottom: 30px;
-      position: relative;
-      animation: float 3s ease-in-out infinite;
-      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
-    }
-
-    .logo::before {
-      content: 'Q';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      font-weight: 800;
-      color: white;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 25px;
+      letter-spacing: 0.3px;
     }
 
     h1 {
-      font-size: 56px;
+      font-size: 64px;
       font-weight: 800;
-      background: linear-gradient(135deg, #3b82f6, #06b6d4, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 1;
+      color: #1a1a1a;
+      line-height: 1.1;
+      margin-bottom: 25px;
+      letter-spacing: -2px;
     }
 
-    .subtitle {
+    .hero-description {
       font-size: 20px;
-      color: #94a3b8;
-      font-weight: 400;
-      position: relative;
-      z-index: 1;
+      color: #6b7280;
+      line-height: 1.7;
+      margin-bottom: 40px;
     }
 
-    /* Main content */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 20px;
-      position: relative;
-      z-index: 1;
+    .hero-actions {
+      display: flex;
+      gap: 15px;
     }
 
-    .card {
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 20px;
-      padding: 40px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(10px);
+    .btn-primary {
+      padding: 16px 32px;
+      background: #1a1a1a;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
       transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .card:hover {
-      border-color: rgba(59, 130, 246, 0.5);
-      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.15);
+    .btn-primary:hover {
+      background: #000000;
       transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     }
 
-    h2 {
-      font-size: 32px;
-      color: #3b82f6;
-      margin-bottom: 20px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    h2::before {
-      content: '';
-      width: 4px;
-      height: 32px;
-      background: linear-gradient(180deg, #3b82f6, #06b6d4);
-      border-radius: 2px;
-    }
-
-    p {
-      font-size: 17px;
-      color: #cbd5e1;
-      margin-bottom: 20px;
-    }
-
-    /* Feature list */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-    }
-
-    .feature-item {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(59, 130, 246, 0.1);
-      border-radius: 16px;
-      padding: 30px;
+    .btn-secondary {
+      padding: 16px 32px;
+      background: transparent;
+      color: #1a1a1a;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
       transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .feature-item:hover {
-      border-color: rgba(59, 130, 246, 0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+    .btn-secondary:hover {
+      border-color: #1a1a1a;
+      background: #f9fafb;
     }
 
-    .feature-icon {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
+    .hero-image {
+      flex: 1;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease 0.3s forwards;
+    }
+
+    .device-mockup {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+    }
+
+    .device-mockup img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Section base styles */
+    section {
+      padding: 120px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .section-tag {
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
       margin-bottom: 15px;
     }
 
-    .feature-item h3 {
-      font-size: 18px;
-      color: #e4e7eb;
-      margin-bottom: 10px;
-      font-weight: 600;
+    h2 {
+      font-size: 48px;
+      font-weight: 800;
+      color: #1a1a1a;
+      line-height: 1.2;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
     }
 
-    .feature-item p {
-      font-size: 15px;
-      color: #94a3b8;
-      margin: 0;
+    .section-description {
+      font-size: 20px;
+      color: #6b7280;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
     }
 
-    /* Links */
-    .nav-links {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 40px;
+    /* Features Section */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 60px;
     }
 
-    .nav-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-radius: 12px;
-      color: #3b82f6;
-      text-decoration: none;
-      font-weight: 600;
+    .feature-card {
+      padding: 40px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
       transition: all 0.3s ease;
     }
 
-    .nav-link:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: rgba(59, 130, 246, 0.6);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+    .feature-card:hover {
+      border-color: #d1d5db;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 25px;
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      font-size: 16px;
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    /* Product Showcase */
+    .showcase {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      margin-bottom: 100px;
+    }
+
+    .showcase:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .showcase-content {
+      flex: 1;
+    }
+
+    .showcase-content h3 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .showcase-content p {
+      font-size: 18px;
+      color: #6b7280;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    .showcase-content ul {
+      list-style: none;
+      margin-top: 25px;
+    }
+
+    .showcase-content li {
+      font-size: 16px;
+      color: #4b5563;
+      padding: 10px 0;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .showcase-content li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .showcase-image {
+      flex: 1;
+      position: relative;
+    }
+
+    .showcase-mockup {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+    }
+
+    .showcase-mockup img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Use Cases */
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .use-case {
+      padding: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .use-case::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transform: translate(50%, -50%);
+    }
+
+    .use-case:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .use-case:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .use-case:nth-child(4) {
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+
+    .use-case-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .use-case h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .use-case p {
+      font-size: 17px;
+      line-height: 1.7;
+      opacity: 0.95;
+      position: relative;
+    }
+
+    /* Stats Section */
+    .stats {
+      background: #f9fafb;
+      border-radius: 24px;
+      padding: 80px;
+      margin: 80px 40px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 56px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+      letter-spacing: -2px;
+    }
+
+    .stat-label {
+      font-size: 16px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: #1a1a1a;
+      color: white;
+      border-radius: 24px;
+      padding: 100px 80px;
+      text-align: center;
+      margin: 80px 40px;
+    }
+
+    .cta-section h2 {
+      color: white;
+      margin-bottom: 25px;
+    }
+
+    .cta-section p {
+      font-size: 20px;
+      color: #d1d5db;
+      max-width: 600px;
+      margin: 0 auto 40px;
     }
 
     /* Footer */
     footer {
-      text-align: center;
-      padding: 60px 20px 40px;
-      color: #64748b;
-      font-size: 14px;
-      border-top: 1px solid rgba(59, 130, 246, 0.1);
-      margin-top: 60px;
+      background: #f9fafb;
+      padding: 80px 40px 40px;
+      border-top: 1px solid #e5e7eb;
     }
 
-    footer p {
-      margin: 8px 0;
-      color: #64748b;
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .footer-brand p {
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    .footer-column h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #6b7280;
+      text-decoration: none;
+      margin-bottom: 12px;
+      font-size: 15px;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .footer-column a:hover {
+      color: #1a1a1a;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #6b7280;
       font-size: 14px;
     }
 
-    .developers {
-      color: #3b82f6;
-      font-weight: 600;
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #1a1a1a;
     }
 
     /* Responsive */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 40px;
+    @media (max-width: 1024px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 120px 30px 80px;
       }
 
-      .subtitle {
-        font-size: 18px;
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      h1 {
+        font-size: 48px;
       }
 
       h2 {
-        font-size: 26px;
+        font-size: 36px;
       }
 
-      .card {
-        padding: 30px 20px;
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .features {
+      .showcase {
+        flex-direction: column !important;
+        gap: 50px;
+      }
+
+      .use-cases-grid {
         grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-container {
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      h2 {
+        font-size: 32px;
+      }
+
+      .hero-description {
+        font-size: 18px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions a,
+      .hero-actions button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 80px 20px;
+      }
+
+      .stats {
+        padding: 50px 30px;
+        margin: 80px 20px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .cta-section {
+        padding: 60px 30px;
+        margin: 80px 20px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-gradient"></div>
-  <div class="grid-overlay"></div>
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="logo-nav">QuestController</div>
+      <ul class="nav-links">
+        <li><a onclick="scrollToSection('features')">Recursos</a></li>
+        <li><a onclick="scrollToSection('product')">Produto</a></li>
+        <li><a href="support.html">Suporte</a></li>
+        <li><a href="support.html" class="nav-cta">Começar</a></li>
+      </ul>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
 
-  <header>
-    <img src="icon QuestController.png" alt="logo" class="logo">
-  
-    <h1>QuestController</h1>
-    <p class="subtitle">Painel Avançado de Controle e Monitoramento para Meta Quest</p>
-  </header>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">SOLUÇÃO EMPRESARIAL</span>
+      <h1>Gestão Profissional para Meta Quest</h1>
+      <p class="hero-description">
+        Sistema completo de monitoramento e controle para dispositivos Meta Quest. 
+        Desenvolvido para empresas, instituições e ambientes profissionais que exigem 
+        gestão centralizada e eficiente.
+      </p>
+      <div class="hero-actions">
+        <a href="support.html" class="btn-primary">Iniciar Demonstração</a>
+        <a onclick="scrollToSection('product')" class="btn-secondary">Ver Recursos</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="device-mockup">
+        <img src="PAINEL MONITORAMENTO/5.png" alt="Interface Principal do QuestController">
+      </div>
+    </div>
+  </section>
 
-  <main>
-    <div class="card">
-      <h2>O que é o QuestController?</h2>
-      <p>
-        O QuestController é uma solução tecnológica avançada desenvolvida especificamente para dispositivos 
-        Meta Quest, oferecendo um painel unificado de monitoramento e controle. Nossa plataforma permite 
-        visualização em tempo real do status do dispositivo e facilita a inicialização de experiências 
-        VR em ambientes profissionais e controlados.
+  <!-- Features Section -->
+  <section id="features">
+    <div class="section-header">
+      <div class="section-tag">RECURSOS</div>
+      <h2>Tudo que você precisa em um só lugar</h2>
+      <p class="section-description">
+        Funcionalidades desenvolvidas para maximizar o controle e a eficiência 
+        na gestão de dispositivos Meta Quest em ambientes profissionais.
+      </p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Monitoramento em Tempo Real</h3>
+        <p>Acompanhe o status completo de todos os dispositivos conectados com atualizações instantâneas e métricas detalhadas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔋</div>
+        <h3>Gestão de Energia</h3>
+        <p>Visualize níveis de bateria, consumo energético e previsões de autonomia para otimizar a operação.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📡</div>
+        <h3>Conectividade Avançada</h3>
+        <p>Monitoramento detalhado de rede, WiFi, latência e qualidade de conexão para garantir performance ideal.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>Interface Otimizada VR</h3>
+        <p>Painel intuitivo projetado especificamente para realidade virtual, garantindo facilidade de uso e eficiência.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Segurança Empresarial</h3>
+        <p>Controles de acesso robustos e criptografia de dados para proteção total das informações corporativas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Relatórios e Analytics</h3>
+        <p>Geração automática de relatórios detalhados com insights sobre uso, performance e métricas operacionais.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Showcase -->
+  <section id="product">
+    <div class="section-header">
+      <div class="section-tag">PRODUTO</div>
+      <h2>Conheça o QuestController</h2>
+      <p class="section-description">
+        Uma solução completa que simplifica a gestão e potencializa 
+        o uso profissional de dispositivos Meta Quest.
       </p>
     </div>
 
-    <div class="card">
-      <h2>Segmentos de Aplicação</h2>
-      <div class="features">
-        <div class="feature-item">
-          <div class="feature-icon">🏢</div>
-          <h3>Corporativo</h3>
-          <p>Ideal para empresas que utilizam VR em seus processos</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">🎓</div>
-          <h3>Educacional</h3>
-          <p>Perfeito para instituições de ensino e treinamento</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">🎯</div>
-          <h3>Demonstrações</h3>
-          <p>Otimizado para showrooms e eventos guiados</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">🔒</div>
-          <h3>Ambientes Privados</h3>
-          <p>Seguro para experiências controladas e exclusivas</p>
+    <div class="showcase">
+      <div class="showcase-content">
+        <h3>Dashboard Centralizado</h3>
+        <p>
+          Visualize todos os seus dispositivos Meta Quest em um único painel centralizado. 
+          Acesse informações críticas, métricas de desempenho e status operacional em tempo real.
+        </p>
+        <ul>
+          <li>Visão geral de todos os dispositivos conectados</li>
+          <li>Alertas e notificações inteligentes</li>
+          <li>Histórico completo de atividades</li>
+          <li>Customização de métricas exibidas</li>
+        </ul>
+      </div>
+      <div class="showcase-image">
+        <div class="showcase-mockup">
+          <img src="PAINEL MONITORAMENTO/1.png" alt="Dashboard Interface do QuestController">
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Recursos Tecnológicos</h2>
-      <div class="features">
-        <div class="feature-item">
-          <div class="feature-icon">📊</div>
-          <h3>Monitoramento em Tempo Real</h3>
-          <p>Acompanhe o status completo do dispositivo instantaneamente</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">🔋</div>
-          <h3>Gestão de Energia</h3>
-          <p>Visualização detalhada de bateria e consumo energético</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">📡</div>
-          <h3>Conectividade</h3>
-          <p>Informações sobre rede, WiFi e status de conexão</p>
-        </div>
-        <div class="feature-item">
-          <div class="feature-icon">🎮</div>
-          <h3>Interface VR Otimizada</h3>
-          <p>Painel visual projetado especificamente para realidade virtual</p>
+    <div class="showcase">
+      <div class="showcase-content">
+        <h3>Gestão Simplificada</h3>
+        <p>
+          Configure, controle e gerencie múltiplos dispositivos simultaneamente. 
+          Economize tempo com automações e processos otimizados para ambientes corporativos.
+        </p>
+        <ul>
+          <li>Configuração remota de dispositivos</li>
+          <li>Atualizações automatizadas de firmware</li>
+          <li>Agendamento de manutenções preventivas</li>
+          <li>Backup e restauração de configurações</li>
+        </ul>
+      </div>
+      <div class="showcase-image">
+        <div class="showcase-mockup">
+          <img src="PAINEL MONITORAMENTO/3.png" alt="Gestão de Dispositivos do QuestController">
         </div>
       </div>
     </div>
 
-    <div class="card">
-      <h2>Compromisso com Segurança</h2>
-      <p>
-        O QuestController opera dentro dos padrões estabelecidos pela Meta, respeitando todas as 
-        limitações da plataforma Meta Quest. O aplicativo não realiza modificações no sistema, 
-        não instala aplicativos automaticamente e não executa ações sem a devida autorização e 
-        interação do usuário.
-      </p>
+    <div class="showcase">
+      <div class="showcase-content">
+        <h3>Análise de Desempenho</h3>
+        <p>
+          Obtenha insights valiosos sobre o uso e desempenho dos dispositivos. 
+          Tome decisões baseadas em dados concretos para otimizar suas operações.
+        </p>
+        <ul>
+          <li>Métricas detalhadas de uso e performance</li>
+          <li>Gráficos e visualizações interativas</li>
+          <li>Exportação de relatórios personalizados</li>
+          <li>Comparativos e análises históricas</li>
+        </ul>
+      </div>
+      <div class="showcase-image">
+        <div class="showcase-mockup">
+          <img src="PAINEL MONITORAMENTO/2.png" alt="Analytics e Relatórios do QuestController">
+        </div>
+      </div>
     </div>
 
-    <div class="nav-links">
-      <a href="privacy.html" class="nav-link">
-        <span>🔒</span>
-        Política de Privacidade
-      </a>
-      <a href="termos-servicos.html" class="nav-link">
-        <span>📋</span>
-        Termos de Serviço
-      </a>
-      <a href="support.html" class="nav-link">
-        <span>💬</span>
-        Suporte
-      </a>
+    <div class="showcase">
+      <div class="showcase-content">
+        <h3>Conformidade e Segurança</h3>
+        <p>
+          Mantenha a conformidade com políticas corporativas e regulamentações do setor. 
+          Segurança de nível empresarial em todas as camadas do sistema.
+        </p>
+        <ul>
+          <li>Criptografia end-to-end de dados sensíveis</li>
+          <li>Controle granular de permissões de usuário</li>
+          <li>Auditoria completa de ações e acessos</li>
+          <li>Conformidade com LGPD e padrões internacionais</li>
+        </ul>
+      </div>
+      <div class="showcase-image">
+        <div class="showcase-mockup">
+          <img src="icon QuestController.png" alt="Segurança e Conformidade do QuestController">
+        </div>
+      </div>
     </div>
-  </main>
+  </section>
 
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <h2>Pronto para começar?</h2>
+    <p>
+      Experimente o QuestController e descubra como transformar a gestão 
+      de dispositivos Meta Quest na sua organização.
+    </p>
+    <a href="support.html" class="btn-primary" style="background: white; color: #1a1a1a;">
+      Solicitar Demonstração
+    </a>
+  </div>
+
+  <!-- Footer -->
   <footer>
-    <p>© 2026 QuestController. Todos os direitos reservados.</p>
-    <p>Desenvolvido por <span class="developers">Micael Bardim & Arthur Almeida</span></p>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>QuestController</h3>
+        <p>
+          Solução profissional de gestão para dispositivos Meta Quest. 
+          Desenvolvido para empresas que exigem controle, segurança e eficiência.
+        </p>
+      </div>
+      <div class="footer-column">
+        <h4>Produto</h4>
+        <a onclick="scrollToSection('features')">Recursos</a>
+        <a onclick="scrollToSection('product')">Visão Geral</a>
+        <a onclick="scrollToSection('use-cases')">Casos de Uso</a>
+        <a href="support.html">Preços</a>
+      </div>
+      <div class="footer-column">
+        <h4>Empresa</h4>
+        <a href="support.html">Sobre Nós</a>
+        <a href="support.html">Suporte</a>
+        <a href="support.html">Documentação</a>
+        <a href="support.html">Blog</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacidade</a>
+        <a href="termos-servicos.html">Termos de Serviço</a>
+        <a href="support.html">Conformidade</a>
+        <a href="support.html">Contato</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 QuestController. Todos os direitos reservados.</div>
+      <div>Desenvolvido por Micael Bardim & Arthur Almeida</div>
+    </div>
   </footer>
+
+  <script>
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll function
+    function scrollToSection(sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const navHeight = 70;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  </script>
 
 </body>
 </html>
