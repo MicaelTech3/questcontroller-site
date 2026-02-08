@@ -2,87 +2,514 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Termos de Serviço - QuestController</title>
+  <title>Termos de Serviço — QuestController</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b1220;
-      color: #ffffff;
-      line-height: 1.6;
-      padding: 40px 20px;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0e1a;
+      color: #e4e7eb;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
+      z-index: -2;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    header {
+      padding: 80px 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 10px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: translateX(-4px);
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+    }
+
+    main {
       max-width: 900px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
     }
-    h1, h2 {
-      color: #4fc3f7;
+
+    .content-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 20px;
+      padding: 50px;
+      backdrop-filter: blur(10px);
     }
-    a {
-      color: #4fc3f7;
+
+    .intro {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      padding: 25px;
+      background: rgba(59, 130, 246, 0.05);
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+    }
+
+    .acceptance-box {
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 40px;
+    }
+
+    .acceptance-box p {
+      color: #c4b5fd;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #3b82f6;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(180deg, #3b82f6, #06b6d4);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: #60a5fa;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 17px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    li {
+      font-size: 17px;
+      color: #cbd5e1;
+      padding: 12px 0 12px 30px;
+      position: relative;
+    }
+
+    li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-weight: bold;
+    }
+
+    .highlight {
+      background: rgba(59, 130, 246, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .warning-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-left: 4px solid #ef4444;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 25px 0;
+    }
+
+    .warning-box p {
+      color: #fca5a5;
+      margin: 0;
+    }
+
+    .contact-box {
+      margin-top: 40px;
+      padding: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+    }
+
+    .contact-box h3 {
+      color: #3b82f6;
+      font-size: 22px;
+      margin: 0 0 15px 0;
+    }
+
+    .contact-box a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .contact-box a:hover {
+      color: #3b82f6;
+    }
+
+    .update-date {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .content-card {
+        padding: 30px 25px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
 
-<h1>Termos de Serviço</h1>
+  <div class="bg-gradient"></div>
+  <div class="grid-overlay"></div>
 
-<p>
-Estes Termos de Serviço regulam o uso do aplicativo <strong>QuestController</strong>.
-Ao utilizar o aplicativo, você concorda com os termos descritos abaixo.
-</p>
+  <header>
+    <a href="index.html" class="back-link">
+      ← Voltar
+    </a>
+    <h1>Termos de Serviço</h1>
+    <p class="subtitle">Condições de uso do QuestController</p>
+  </header>
 
-<h2>Uso do aplicativo</h2>
-<p>
-O QuestController é um aplicativo utilitário desenvolvido para dispositivos Meta Quest,
-destinado ao monitoramento de status do dispositivo e à inicialização de experiências
-previamente configuradas.
-</p>
+  <main>
+    <div class="content-card">
+      <div class="intro">
+        Estes Termos de Serviço estabelecem as regras e condições para o uso do aplicativo 
+        <span class="highlight">QuestController</span>. Leia atentamente antes de utilizar o serviço.
+      </div>
 
-<p>
-O usuário concorda em utilizar o aplicativo apenas para fins legítimos e de acordo
-com as políticas da Meta e com as leis aplicáveis.
-</p>
+      <div class="acceptance-box">
+        <p>
+          ⚠️ Ao instalar, acessar ou utilizar o QuestController, você confirma que leu, compreendeu 
+          e concorda em cumprir estes Termos de Serviço na sua integralidade.
+        </p>
+      </div>
 
-<h2>Limitações</h2>
-<p>
-O QuestController não garante disponibilidade contínua e pode ser alterado, suspenso
-ou descontinuado a qualquer momento sem aviso prévio.
-</p>
+      <h2>1. Definições e Escopo do Serviço</h2>
+      
+      <h3>1.1 O que é o QuestController</h3>
+      <p>
+        O QuestController é um aplicativo utilitário desenvolvido especificamente para dispositivos 
+        Meta Quest, com as seguintes finalidades principais:
+      </p>
+      <ul>
+        <li>Monitoramento em tempo real do status e desempenho do dispositivo</li>
+        <li>Exibição de informações técnicas como bateria, conectividade e recursos do sistema</li>
+        <li>Facilitação da inicialização de experiências VR em ambientes controlados</li>
+        <li>Fornecimento de um painel visual otimizado para realidade virtual</li>
+      </ul>
 
-<p>
-O aplicativo não modifica o sistema do dispositivo, não instala aplicativos
-automaticamente e não executa ações sem interação ou autorização do usuário.
-</p>
+      <h3>1.2 Público-Alvo</h3>
+      <p>
+        O aplicativo é direcionado para:
+      </p>
+      <ul>
+        <li>Ambientes corporativos e empresariais</li>
+        <li>Instituições educacionais e de treinamento</li>
+        <li>Demonstrações profissionais e eventos guiados</li>
+        <li>Experiências privadas e controladas</li>
+      </ul>
 
-<h2>Responsabilidades</h2>
-<p>
-Os desenvolvedores não se responsabilizam por danos diretos ou indiretos decorrentes
-do uso indevido do aplicativo ou da indisponibilidade temporária do serviço.
-</p>
+      <h2>2. Licença de Uso</h2>
+      
+      <h3>2.1 Concessão de Licença</h3>
+      <p>
+        Concedemos a você uma licença limitada, não exclusiva, não transferível e revogável para 
+        usar o QuestController em seus dispositivos Meta Quest compatíveis, exclusivamente para 
+        os fins descritos nestes termos.
+      </p>
 
-<h2>Propriedade intelectual</h2>
-<p>
-O QuestController, incluindo seu nome, identidade visual e funcionalidades, é de
-propriedade de seus desenvolvedores, sendo vedada a reprodução não autorizada.
-</p>
+      <h3>2.2 Restrições de Uso</h3>
+      <p>
+        Você concorda expressamente em NÃO:
+      </p>
+      <ul>
+        <li>Modificar, descompilar, fazer engenharia reversa ou criar obras derivadas do aplicativo</li>
+        <li>Utilizar o aplicativo para fins ilegais, não éticos ou não autorizados</li>
+        <li>Remover, alterar ou ocultar avisos de direitos autorais ou marcas registradas</li>
+        <li>Distribuir, sublicenciar, alugar ou emprestar o aplicativo a terceiros</li>
+        <li>Tentar contornar limitações técnicas ou medidas de segurança</li>
+      </ul>
 
-<h2>Alterações nos termos</h2>
-<p>
-Estes Termos de Serviço podem ser atualizados periodicamente. Recomenda-se que o
-usuário revise esta página ocasionalmente.
-</p>
+      <h2>3. Requisitos e Compatibilidade</h2>
+      
+      <h3>3.1 Dispositivos Compatíveis</h3>
+      <p>
+        O QuestController é compatível com:
+      </p>
+      <ul>
+        <li>Meta Quest 2</li>
+        <li>Meta Quest Pro</li>
+        <li>Meta Quest 3</li>
+      </ul>
+      <p>
+        Recomendamos manter o firmware do dispositivo sempre atualizado para garantir a melhor 
+        experiência e compatibilidade.
+      </p>
 
-<h2>Contato</h2>
-<p>
-Em caso de dúvidas sobre estes Termos de Serviço, entre em contato:
-<br>
-<strong>Email:</strong> questcontroller.br@gmail.com
-</p>
+      <h3>3.2 Requisitos do Sistema</h3>
+      <p>
+        Para funcionamento adequado, pode ser necessária conexão à internet para atualizações e 
+        certas funcionalidades, embora o monitoramento básico funcione offline.
+      </p>
 
-<p>
-<a href="index.html">Voltar para a página inicial</a>
-</p>
+      <h2>4. Limitações e Responsabilidades</h2>
+      
+      <h3>4.1 Disponibilidade do Serviço</h3>
+      <p>
+        O QuestController é fornecido "como está" e "conforme disponível". Não garantimos:
+      </p>
+      <ul>
+        <li>Disponibilidade contínua e ininterrupta do serviço</li>
+        <li>Ausência total de erros ou bugs</li>
+        <li>Compatibilidade com todas as futuras atualizações do Meta Quest</li>
+      </ul>
+
+      <div class="warning-box">
+        <p>
+          <strong>Importante:</strong> Reservamo-nos o direito de modificar, suspender ou descontinuar 
+          o QuestController, parcial ou totalmente, a qualquer momento, com ou sem aviso prévio.
+        </p>
+      </div>
+
+      <h3>4.2 Limitação de Responsabilidade</h3>
+      <p>
+        Os desenvolvedores do QuestController não se responsabilizam por:
+      </p>
+      <ul>
+        <li>Danos diretos, indiretos, incidentais ou consequenciais decorrentes do uso ou impossibilidade de uso</li>
+        <li>Perda de dados, lucros cessantes ou interrupção de negócios</li>
+        <li>Incompatibilidade com aplicativos ou serviços de terceiros</li>
+        <li>Uso indevido ou não autorizado do aplicativo</li>
+      </ul>
+
+      <h3>4.3 O que o QuestController NÃO faz</h3>
+      <p>
+        Para total transparência, esclarecemos que o aplicativo:
+      </p>
+      <ul>
+        <li>Não modifica arquivos do sistema ou configurações críticas do dispositivo</li>
+        <li>Não instala aplicativos automaticamente sem autorização explícita</li>
+        <li>Não executa ações em segundo plano sem conhecimento do usuário</li>
+        <li>Não contorna restrições de segurança da plataforma Meta</li>
+      </ul>
+
+      <h2>5. Propriedade Intelectual</h2>
+      
+      <h3>5.1 Direitos Autorais</h3>
+      <p>
+        O QuestController, incluindo mas não limitado a seu código-fonte, design, interface, 
+        logotipos, nome e documentação, é propriedade exclusiva de seus desenvolvedores e está 
+        protegido por leis de direitos autorais e propriedade intelectual.
+      </p>
+
+      <h3>5.2 Marcas Registradas</h3>
+      <p>
+        "QuestController" e logotipos associados são marcas de propriedade dos desenvolvedores. 
+        "Meta Quest" é marca registrada da Meta Platforms, Inc. e é usada com propósitos descritivos.
+      </p>
+
+      <h2>6. Privacidade e Dados</h2>
+      
+      <p>
+        O tratamento de dados pessoais e informações coletadas pelo QuestController é regido por 
+        nossa <a href="privacy.html" style="color: #60a5fa; text-decoration: none; font-weight: 600;">Política de Privacidade</a>, 
+        que é parte integrante destes Termos de Serviço.
+      </p>
+
+      <h2>7. Conformidade Legal</h2>
+      
+      <h3>7.1 Legislação Aplicável</h3>
+      <p>
+        O usuário concorda em utilizar o QuestController em conformidade com:
+      </p>
+      <ul>
+        <li>Todas as leis e regulamentações locais, estaduais e nacionais aplicáveis</li>
+        <li>Políticas e diretrizes da Meta para desenvolvedores</li>
+        <li>Termos de Serviço da Meta Store</li>
+        <li>Estes Termos de Serviço</li>
+      </ul>
+
+      <h3>7.2 Jurisdição</h3>
+      <p>
+        Estes termos são regidos pelas leis da República Federativa do Brasil. Quaisquer disputas 
+        serão resolvidas nos tribunais competentes do Brasil.
+      </p>
+
+      <h2>8. Atualizações e Manutenção</h2>
+      
+      <p>
+        Podemos lançar atualizações, patches ou novas versões do QuestController periodicamente. 
+        Embora nos esforcemos para manter a compatibilidade retroativa, algumas atualizações podem 
+        requerer ação do usuário ou podem alterar funcionalidades existentes.
+      </p>
+
+      <h2>9. Rescisão</h2>
+      
+      <h3>9.1 Rescisão pelo Usuário</h3>
+      <p>
+        Você pode cessar o uso do QuestController a qualquer momento desinstalando o aplicativo 
+        de seu dispositivo.
+      </p>
+
+      <h3>9.2 Rescisão pelos Desenvolvedores</h3>
+      <p>
+        Reservamo-nos o direito de suspender ou encerrar seu acesso ao QuestController, sem aviso 
+        prévio, em caso de violação destes Termos de Serviço ou uso indevido do aplicativo.
+      </p>
+
+      <h2>10. Modificações dos Termos</h2>
+      
+      <p>
+        Estes Termos de Serviço podem ser atualizados periodicamente para refletir:
+      </p>
+      <ul>
+        <li>Mudanças na legislação aplicável</li>
+        <li>Novas funcionalidades ou alterações no aplicativo</li>
+        <li>Melhorias nas políticas de uso</li>
+      </ul>
+      <p>
+        Alterações significativas serão comunicadas através do aplicativo ou por meio eletrônico. 
+        O uso continuado do QuestController após alterações constitui aceitação dos novos termos.
+      </p>
+
+      <h2>11. Disposições Gerais</h2>
+      
+      <h3>11.1 Acordo Integral</h3>
+      <p>
+        Estes Termos de Serviço, juntamente com a Política de Privacidade, constituem o acordo 
+        integral entre você e os desenvolvedores do QuestController.
+      </p>
+
+      <h3>11.2 Independência das Cláusulas</h3>
+      <p>
+        Se qualquer disposição destes termos for considerada inválida ou inexequível, as demais 
+        disposições permanecerão em pleno vigor e efeito.
+      </p>
+
+      <h3>11.3 Ausência de Renúncia</h3>
+      <p>
+        A falha em exercer ou fazer cumprir qualquer direito ou disposição destes termos não 
+        constitui renúncia a tal direito ou disposição.
+      </p>
+
+      <div class="contact-box">
+        <h3>Contato para Questões Legais</h3>
+        <p>
+          Para dúvidas, esclarecimentos ou questões relacionadas a estes Termos de Serviço:
+        </p>
+        <p>
+          📧 <strong>Email:</strong> <a href="mailto:questcontroller.br@gmail.com">questcontroller.br@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="update-date">
+        <p>Última atualização: Fevereiro de 2026</p>
+        <p>Versão 1.0</p>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>

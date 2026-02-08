@@ -2,43 +2,395 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Suporte - QuestController</title>
+  <title>Suporte — QuestController</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b1220;
-      color: #ffffff;
-      line-height: 1.6;
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: auto;
+      padding: 0;
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0e1a;
+      color: #e4e7eb;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
+      z-index: -2;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    header {
+      padding: 80px 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 10px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: translateX(-4px);
+    }
+
     h1 {
-      color: #4fc3f7;
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
     }
-    a {
-      color: #4fc3f7;
+
+    .subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .content-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 20px;
+      padding: 50px;
+      backdrop-filter: blur(10px);
+    }
+
+    .intro {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .support-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      padding: 35px;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .support-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+    }
+
+    .support-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+
+    .support-card h3 {
+      color: #3b82f6;
+      font-size: 22px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .support-card p {
+      color: #94a3b8;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .support-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 10px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .support-link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.6);
+      transform: scale(1.05);
+    }
+
+    .faq-section {
+      margin-top: 50px;
+    }
+
+    .faq-section h2 {
+      font-size: 32px;
+      color: #3b82f6;
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .faq-item {
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .faq-question {
+      color: #e4e7eb;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-question::before {
+      content: 'Q';
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: rgba(59, 130, 246, 0.2);
+      border-radius: 6px;
+      color: #3b82f6;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .faq-answer {
+      color: #94a3b8;
+      font-size: 16px;
+      line-height: 1.7;
+      padding-left: 38px;
+    }
+
+    .response-time {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .response-time .time {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #10b981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .response-time p {
+      color: #94a3b8;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .content-card {
+        padding: 30px 25px;
+      }
+
+      .support-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-<h1>Suporte</h1>
+  <div class="bg-gradient"></div>
+  <div class="grid-overlay"></div>
 
-<p>
-Para suporte, dúvidas ou informações adicionais sobre o QuestController,
-entre em contato:
-</p>
+  <header>
+    <a href="index.html" class="back-link">
+      ← Voltar
+    </a>
+    <h1>Central de Suporte</h1>
+    <p class="subtitle">Estamos aqui para ajudar você</p>
+  </header>
 
-<p>
-📧 <strong>Email:</strong> questcontroller.br@gmail.com
-</p>
+  <main>
+    <div class="content-card">
+      <p class="intro">
+        Nossa equipe de suporte está dedicada a proporcionar a melhor experiência possível 
+        com o QuestController. Entre em contato conosco através dos canais abaixo.
+      </p>
 
-<p>
-<a href="index.html">Voltar para a página inicial</a>
-</p>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-icon">📧</div>
+          <h3>Email</h3>
+          <p>Para suporte técnico, dúvidas ou feedback</p>
+          <a href="mailto:questcontroller.br@gmail.com" class="support-link">
+            Enviar Email
+          </a>
+        </div>
+
+        <div class="support-card">
+          <div class="support-icon">📚</div>
+          <h3>Documentação</h3>
+          <p>Guias e recursos para usar o QuestController</p>
+          <a href="#" class="support-link">
+            Ver Documentação
+          </a>
+        </div>
+
+        <div class="support-card">
+          <div class="support-icon">💡</div>
+          <h3>FAQ</h3>
+          <p>Respostas rápidas para perguntas frequentes</p>
+          <a href="#faq" class="support-link">
+            Ver Perguntas
+          </a>
+        </div>
+      </div>
+
+      <div class="response-time">
+        <div class="time">24-48h</div>
+        <p>Tempo médio de resposta da nossa equipe de suporte</p>
+      </div>
+
+      <div class="faq-section" id="faq">
+        <h2>Perguntas Frequentes</h2>
+
+        <div class="faq-item">
+          <div class="faq-question">Como instalar o QuestController?</div>
+          <div class="faq-answer">
+            O QuestController pode ser instalado através da Meta Store ou através de sideload seguindo 
+            as instruções fornecidas em nossa documentação oficial. Certifique-se de que seu dispositivo 
+            Meta Quest está atualizado com a versão mais recente do sistema.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Quais dispositivos são compatíveis?</div>
+          <div class="faq-answer">
+            O QuestController é compatível com Meta Quest 2, Meta Quest Pro e Meta Quest 3. 
+            Recomendamos sempre manter o firmware do dispositivo atualizado para garantir a melhor 
+            compatibilidade e desempenho.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">O aplicativo requer conexão com a internet?</div>
+          <div class="faq-answer">
+            O QuestController funciona primariamente offline para monitoramento local do dispositivo. 
+            No entanto, algumas funcionalidades como atualizações e sincronização de configurações 
+            podem requerer conexão à internet.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Como reportar um bug ou problema técnico?</div>
+          <div class="faq-answer">
+            Para reportar bugs ou problemas técnicos, envie um email para questcontroller.br@gmail.com 
+            com uma descrição detalhada do problema, incluindo modelo do dispositivo, versão do sistema 
+            e passos para reproduzir o erro. Responderemos o mais breve possível.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">O QuestController coleta dados pessoais?</div>
+          <div class="faq-answer">
+            Não. O QuestController coleta apenas informações técnicas necessárias para o funcionamento 
+            do aplicativo, como status de bateria e conectividade. Não coletamos dados pessoais 
+            identificáveis. Consulte nossa Política de Privacidade para mais detalhes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Posso usar em ambiente empresarial?</div>
+          <div class="faq-answer">
+            Sim! O QuestController foi desenvolvido pensando em ambientes corporativos, educacionais 
+            e de demonstração. Entre em contato conosco para discutir implementações específicas 
+            para sua organização.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>

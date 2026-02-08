@@ -2,77 +2,353 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Política de Privacidade - QuestController</title>
+  <title>Política de Privacidade — QuestController</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b1220;
-      color: #ffffff;
-      line-height: 1.6;
-      padding: 40px 20px;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0e1a;
+      color: #e4e7eb;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    .bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
+      z-index: -2;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    header {
+      padding: 80px 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 10px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: translateX(-4px);
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+    }
+
+    main {
       max-width: 900px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
     }
-    h1, h2 {
-      color: #4fc3f7;
+
+    .content-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 20px;
+      padding: 50px;
+      backdrop-filter: blur(10px);
     }
-    a {
-      color: #4fc3f7;
+
+    .intro {
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      padding: 25px;
+      background: rgba(59, 130, 246, 0.05);
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #3b82f6;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2:first-of-type {
+      margin-top: 0;
+    }
+
+    h2::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(180deg, #3b82f6, #06b6d4);
+      border-radius: 2px;
+    }
+
+    p {
+      font-size: 17px;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 20px 0;
+    }
+
+    li {
+      font-size: 17px;
+      color: #cbd5e1;
+      padding: 12px 0 12px 30px;
+      position: relative;
+    }
+
+    li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-weight: bold;
+    }
+
+    .highlight {
+      background: rgba(59, 130, 246, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #60a5fa;
+      font-weight: 600;
+    }
+
+    .contact-box {
+      margin-top: 40px;
+      padding: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+    }
+
+    .contact-box h3 {
+      color: #3b82f6;
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+
+    .contact-box a {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .contact-box a:hover {
+      color: #3b82f6;
+    }
+
+    .update-date {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(59, 130, 246, 0.1);
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .back-link {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .content-card {
+        padding: 30px 25px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
 <body>
 
-<h1>Política de Privacidade</h1>
+  <div class="bg-gradient"></div>
+  <div class="grid-overlay"></div>
 
-<p>
-Esta Política de Privacidade descreve como o aplicativo <strong>QuestController</strong>
-coleta, utiliza e protege as informações dos usuários.
-</p>
+  <header>
+    <a href="index.html" class="back-link">
+      ← Voltar
+    </a>
+    <h1>Política de Privacidade</h1>
+    <p class="subtitle">Como protegemos suas informações</p>
+  </header>
 
-<h2>Informações coletadas</h2>
-<p>
-O QuestController pode coletar informações básicas do dispositivo, como:
-</p>
-<ul>
-  <li>Status de conexão</li>
-  <li>Nível de bateria</li>
-  <li>Identificador técnico do dispositivo</li>
-</ul>
+  <main>
+    <div class="content-card">
+      <div class="intro">
+        Esta Política de Privacidade estabelece de forma clara e transparente como o <span class="highlight">QuestController</span> 
+        coleta, utiliza, armazena e protege as informações dos usuários, em conformidade com as melhores 
+        práticas de segurança e privacidade de dados.
+      </div>
 
-<p>
-Essas informações são utilizadas exclusivamente para o funcionamento do aplicativo
-e para exibição de status ao usuário.
-</p>
+      <h2>Informações Coletadas</h2>
+      <p>
+        O QuestController coleta exclusivamente informações técnicas e operacionais necessárias para 
+        o funcionamento adequado do aplicativo. As informações coletadas incluem:
+      </p>
+      <ul>
+        <li>Status de conexão de rede do dispositivo</li>
+        <li>Nível e estado de carga da bateria</li>
+        <li>Identificador técnico anônimo do dispositivo</li>
+        <li>Métricas de desempenho do sistema</li>
+      </ul>
+      <p>
+        <strong>Importante:</strong> Não coletamos dados pessoais identificáveis, informações de localização 
+        precisa, conteúdo de comunicações ou dados biométricos.
+      </p>
 
-<h2>Uso das informações</h2>
-<p>
-As informações coletadas não são vendidas, compartilhadas ou utilizadas para fins
-publicitários. Os dados são usados apenas para monitoramento e funcionamento do app.
-</p>
+      <h2>Finalidade do Uso das Informações</h2>
+      <p>
+        As informações técnicas coletadas são utilizadas exclusivamente para:
+      </p>
+      <ul>
+        <li>Exibir status em tempo real do dispositivo ao usuário</li>
+        <li>Otimizar o desempenho e estabilidade do aplicativo</li>
+        <li>Diagnosticar e resolver problemas técnicos</li>
+        <li>Melhorar a experiência do usuário</li>
+      </ul>
+      <p>
+        Garantimos que <span class="highlight">nenhum dado coletado é vendido, compartilhado com terceiros 
+        ou utilizado para fins publicitários</span>.
+      </p>
 
-<h2>Compartilhamento de dados</h2>
-<p>
-O QuestController não compartilha dados pessoais com terceiros.
-</p>
+      <h2>Compartilhamento de Dados</h2>
+      <p>
+        O QuestController não compartilha, vende ou transfere dados pessoais ou técnicos para terceiros 
+        em nenhuma circunstância. Todas as informações permanecem exclusivamente dentro do ecossistema 
+        do aplicativo.
+      </p>
+      <p>
+        <strong>Exceções:</strong> Podemos divulgar informações apenas quando legalmente obrigados por 
+        ordem judicial ou para proteger direitos, segurança ou propriedade.
+      </p>
 
-<h2>Segurança</h2>
-<p>
-Medidas razoáveis são adotadas para proteger as informações contra acesso não autorizado.
-</p>
+      <h2>Armazenamento e Segurança</h2>
+      <p>
+        Implementamos medidas técnicas e organizacionais adequadas para proteger as informações contra 
+        acesso não autorizado, alteração, divulgação ou destruição:
+      </p>
+      <ul>
+        <li>Criptografia de dados em trânsito e em repouso</li>
+        <li>Controles de acesso rigorosos</li>
+        <li>Monitoramento contínuo de segurança</li>
+        <li>Atualizações regulares de segurança</li>
+      </ul>
 
-<h2>Contato</h2>
-<p>
-Em caso de dúvidas sobre esta política, entre em contato:
-<br>
-<strong>Email:</strong> questcontroller.br@gmail.br
-</p>
+      <h2>Retenção de Dados</h2>
+      <p>
+        Mantemos as informações técnicas apenas pelo tempo necessário para cumprir as finalidades descritas 
+        nesta política. Dados temporários são automaticamente excluídos quando não são mais necessários.
+      </p>
 
-<p>
-<a href="index.html">Voltar para a página inicial</a>
-</p>
+      <h2>Direitos do Usuário</h2>
+      <p>
+        Os usuários têm direito a:
+      </p>
+      <ul>
+        <li>Solicitar informações sobre dados coletados</li>
+        <li>Requerer a exclusão de dados armazenados</li>
+        <li>Opor-se ao processamento de dados</li>
+        <li>Obter esclarecimentos sobre esta política</li>
+      </ul>
+
+      <h2>Conformidade Legal</h2>
+      <p>
+        Esta política está em conformidade com:
+      </p>
+      <ul>
+        <li>Lei Geral de Proteção de Dados (LGPD) - Brasil</li>
+        <li>Políticas e diretrizes da Meta para desenvolvedores</li>
+        <li>Melhores práticas internacionais de privacidade</li>
+      </ul>
+
+      <h2>Alterações na Política</h2>
+      <p>
+        Reservamo-nos o direito de atualizar esta Política de Privacidade periodicamente para refletir 
+        mudanças em nossas práticas ou por exigências legais. Recomendamos a revisão regular desta página.
+      </p>
+      <p>
+        Alterações significativas serão comunicadas através do aplicativo ou por meio eletrônico.
+      </p>
+
+      <div class="contact-box">
+        <h3>Contato e Dúvidas</h3>
+        <p>
+          Para questões relacionadas à privacidade, solicitações de dados ou esclarecimentos sobre esta política:
+        </p>
+        <p>
+          📧 <strong>Email:</strong> <a href="mailto:questcontroller.br@gmail.com">questcontroller.br@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="update-date">
+        <p>Última atualização: Fevereiro de 2026</p>
+      </div>
+    </div>
+  </main>
 
 </body>
 </html>
