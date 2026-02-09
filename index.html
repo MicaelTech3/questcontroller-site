@@ -56,6 +56,7 @@
       font-weight: 700;
       color: #1a1a1a;
       letter-spacing: -0.5px;
+      text-decoration: none;
     }
 
     .nav-links {
@@ -89,6 +90,184 @@
     .nav-cta:hover {
       background: #000000;
       transform: translateY(-1px);
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #1a1a1a;
+      padding: 5px;
+      z-index: 1001;
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Sidebar */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1002;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    .mobile-sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 32px;
+      cursor: pointer;
+      padding: 5px;
+      line-height: 1;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .sidebar-close:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    .sidebar-menu li {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .sidebar-menu a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    .sidebar-menu a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #ffffff;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-menu a:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar-cta {
+      margin: 25px;
+      padding: 16px 0;
+      background: #ffffff;
+      color: #1a1a1a !important;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar-cta:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+      padding-left: 25px !important;
+    }
+
+    .sidebar-cta::before {
+      display: none;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-footer-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* Hero Section */
@@ -299,7 +478,7 @@
       font-size: 22px;
       font-weight: 700;
       color: #1a1a1a;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
     }
 
     .feature-card p {
@@ -308,20 +487,21 @@
       line-height: 1.7;
     }
 
-    /* Product Showcase */
+    /* Showcase Section */
     .showcase {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 80px;
+      align-items: center;
       margin-bottom: 100px;
     }
 
     .showcase:nth-child(even) {
-      flex-direction: row-reverse;
+      direction: rtl;
     }
 
-    .showcase-content {
-      flex: 1;
+    .showcase:nth-child(even) > * {
+      direction: ltr;
     }
 
     .showcase-content h3 {
@@ -336,18 +516,19 @@
       font-size: 18px;
       color: #6b7280;
       line-height: 1.8;
-      margin-bottom: 15px;
+      margin-bottom: 30px;
     }
 
     .showcase-content ul {
       list-style: none;
-      margin-top: 25px;
+      margin: 0;
+      padding: 0;
     }
 
     .showcase-content li {
-      font-size: 16px;
+      font-size: 17px;
       color: #4b5563;
-      padding: 10px 0;
+      padding: 12px 0;
       padding-left: 30px;
       position: relative;
     }
@@ -356,23 +537,19 @@
       content: '✓';
       position: absolute;
       left: 0;
-      color: #10b981;
+      color: #1a1a1a;
       font-weight: bold;
       font-size: 18px;
     }
 
     .showcase-image {
-      flex: 1;
       position: relative;
     }
 
     .showcase-mockup {
-      width: 100%;
-      height: auto;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-      background: #f3f4f6;
       border: 1px solid #e5e7eb;
     }
 
@@ -380,118 +557,31 @@
       width: 100%;
       height: auto;
       display: block;
-      object-fit: cover;
-    }
-
-    /* Use Cases */
-    .use-cases-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-      margin-top: 60px;
-    }
-
-    .use-case {
-      padding: 50px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 20px;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .use-case::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 200px;
-      height: 200px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      transform: translate(50%, -50%);
-    }
-
-    .use-case:nth-child(2) {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .use-case:nth-child(3) {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .use-case:nth-child(4) {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    }
-
-    .use-case-icon {
-      font-size: 40px;
-      margin-bottom: 20px;
-    }
-
-    .use-case h3 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 15px;
-      position: relative;
-    }
-
-    .use-case p {
-      font-size: 17px;
-      line-height: 1.7;
-      opacity: 0.95;
-      position: relative;
-    }
-
-    /* Stats Section */
-    .stats {
-      background: #f9fafb;
-      border-radius: 24px;
-      padding: 80px;
-      margin: 80px 40px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 60px;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 56px;
-      font-weight: 800;
-      color: #1a1a1a;
-      margin-bottom: 10px;
-      letter-spacing: -2px;
-    }
-
-    .stat-label {
-      font-size: 16px;
-      color: #6b7280;
-      font-weight: 500;
     }
 
     /* CTA Section */
     .cta-section {
-      background: #1a1a1a;
-      color: white;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
       border-radius: 24px;
-      padding: 100px 80px;
+      padding: 80px 60px;
       text-align: center;
-      margin: 80px 40px;
+      margin: 120px auto;
+      max-width: 1200px;
     }
 
     .cta-section h2 {
-      color: white;
-      margin-bottom: 25px;
+      color: #ffffff;
+      font-size: 48px;
+      margin-bottom: 20px;
     }
 
     .cta-section p {
+      color: rgba(255, 255, 255, 0.85);
       font-size: 20px;
-      color: #d1d5db;
+      margin-bottom: 40px;
       max-width: 600px;
-      margin: 0 auto 40px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* Footer */
@@ -535,7 +625,6 @@
       margin-bottom: 12px;
       font-size: 15px;
       transition: color 0.3s ease;
-      cursor: pointer;
     }
 
     .footer-column a:hover {
@@ -554,56 +643,24 @@
       font-size: 14px;
     }
 
-    /* Mobile menu */
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #1a1a1a;
-    }
-
     /* Responsive */
     @media (max-width: 1024px) {
       .hero {
         flex-direction: column;
-        text-align: center;
-        padding: 120px 30px 80px;
+        gap: 60px;
       }
 
-      .hero-content {
-        max-width: 100%;
+      .showcase {
+        grid-template-columns: 1fr;
+        gap: 40px;
       }
 
-      .hero-actions {
-        justify-content: center;
-      }
-
-      h1 {
-        font-size: 48px;
-      }
-
-      h2 {
-        font-size: 36px;
+      .showcase:nth-child(even) {
+        direction: ltr;
       }
 
       .features-grid {
         grid-template-columns: repeat(2, 1fr);
-      }
-
-      .showcase {
-        flex-direction: column !important;
-        gap: 50px;
-      }
-
-      .use-cases-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
       }
 
       .footer-content {
@@ -624,49 +681,34 @@
         padding: 0 20px;
       }
 
+      .mobile-sidebar {
+        width: 280px;
+      }
+
       h1 {
-        font-size: 36px;
+        font-size: 42px;
       }
 
       h2 {
-        font-size: 32px;
+        font-size: 36px;
       }
 
-      .hero-description {
-        font-size: 18px;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .hero-actions a,
-      .hero-actions button {
-        width: 100%;
-        text-align: center;
+      .hero {
+        padding: 120px 20px 80px;
       }
 
       .features-grid {
         grid-template-columns: 1fr;
-      }
-
-      section {
-        padding: 80px 20px;
-      }
-
-      .stats {
-        padding: 50px 30px;
-        margin: 80px 20px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 25px;
       }
 
       .cta-section {
         padding: 60px 30px;
         margin: 80px 20px;
+      }
+
+      .cta-section h2 {
+        font-size: 32px;
       }
 
       .footer-content {
@@ -679,22 +721,57 @@
         gap: 15px;
         text-align: center;
       }
+
+      .hero-actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">QuestController</div>
+      <button class="sidebar-close" id="sidebarClose">×</button>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="#features"><span class="menu-icon">✨</span> Recursos</a></li>
+      <li><a href="#product"><span class="menu-icon">📦</span> Produto</a></li>
+      <li><a href="support.html"><span class="menu-icon">💬</span> Suporte</a></li>
+      <li><a href="privacy.html"><span class="menu-icon">🔒</span> Privacidade</a></li>
+      <li><a href="termos-serviços.html"><span class="menu-icon">📄</span> Termos</a></li>
+      <li><a href="support.html" class="sidebar-cta"><span class="menu-icon">🚀</span> Começar Agora</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">
+        © 2026 QuestController<br>
+        Desenvolvido por Micael Bardim & Arthur Almeida
+      </div>
+    </div>
+  </div>
+
   <!-- Navigation -->
   <nav id="navbar">
     <div class="nav-container">
-      <div class="logo-nav">QuestController</div>
+      <a href="index.html" class="logo-nav">QuestController</a>
       <ul class="nav-links">
-        <li><a onclick="scrollToSection('features')">Recursos</a></li>
-        <li><a onclick="scrollToSection('product')">Produto</a></li>
+        <li><a href="#features">Recursos</a></li>
+        <li><a href="#product">Produto</a></li>
         <li><a href="support.html">Suporte</a></li>
         <li><a href="support.html" class="nav-cta">Começar</a></li>
       </ul>
-      <button class="mobile-menu-btn">☰</button>
+      <button class="mobile-menu-btn" id="menuBtn">☰</button>
     </div>
   </nav>
 
@@ -710,7 +787,7 @@
       </p>
       <div class="hero-actions">
         <a href="support.html" class="btn-primary">Iniciar Demonstração</a>
-        <a onclick="scrollToSection('product')" class="btn-secondary">Ver Recursos</a>
+        <a href="#product" class="btn-secondary">Ver Recursos</a>
       </div>
     </div>
     <div class="hero-image">
@@ -860,7 +937,6 @@
     </div>
   </section>
 
-
   <!-- CTA Section -->
   <div class="cta-section">
     <h2>Pronto para começar?</h2>
@@ -885,9 +961,8 @@
       </div>
       <div class="footer-column">
         <h4>Produto</h4>
-        <a onclick="scrollToSection('features')">Recursos</a>
-        <a onclick="scrollToSection('product')">Visão Geral</a>
-        <a onclick="scrollToSection('use-cases')">Casos de Uso</a>
+        <a href="#features">Recursos</a>
+        <a href="#product">Visão Geral</a>
         <a href="support.html">Preços</a>
       </div>
       <div class="footer-column">
@@ -895,13 +970,11 @@
         <a href="support.html">Sobre Nós</a>
         <a href="support.html">Suporte</a>
         <a href="support.html">Documentação</a>
-        <a href="support.html">Blog</a>
       </div>
       <div class="footer-column">
         <h4>Legal</h4>
         <a href="privacy.html">Privacidade</a>
-        <a href="termos-servicos.html">Termos de Serviço</a>
-        <a href="support.html">Conformidade</a>
+        <a href="termos-serviços.html">Termos de Serviço</a>
         <a href="support.html">Contato</a>
       </div>
     </div>
@@ -912,7 +985,37 @@
   </footer>
 
   <script>
-    // Scroll animations
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const overlay = document.getElementById('overlay');
+
+    menuBtn.addEventListener('click', () => {
+      mobileSidebar.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      mobileSidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      mobileSidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    // Close sidebar when clicking on a link
+    const sidebarLinks = mobileSidebar.querySelectorAll('a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileSidebar.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    });
+
+    // Scroll animation
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
@@ -933,27 +1036,8 @@
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
-
-    // Smooth scroll function
-    function scrollToSection(sectionId) {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        const navHeight = 70;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
   </script>
 
 </body>

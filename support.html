@@ -466,128 +466,212 @@
       font-size: 14px;
     }
 
-    /* Mobile menu */
+    
+    /* Mobile menu button */
     .mobile-menu-btn {
       display: none;
       background: none;
       border: none;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
       color: #1a1a1a;
+      padding: 5px;
+      z-index: 1001;
+      transition: transform 0.3s ease;
     }
 
-    /* Animations */
-    section {
+    .mobile-menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Sidebar */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1002;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    .mobile-sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 32px;
+      cursor: pointer;
+      padding: 5px;
+      line-height: 1;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .sidebar-close:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    .sidebar-menu li {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .sidebar-menu a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    .sidebar-menu a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #ffffff;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-menu a:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar-cta {
+      margin: 25px;
+      padding: 16px 0;
+      background: #ffffff;
+      color: #1a1a1a !important;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar-cta:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+      padding-left: 25px !important;
+    }
+
+    .sidebar-cta::before {
+      display: none;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-footer-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
       opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 1s ease forwards;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
     }
 
-    /* Responsive */
-    @media (max-width: 1024px) {
-      h1 {
-        font-size: 42px;
-      }
-
-      h2 {
-        font-size: 36px;
-      }
-
-      .contact-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .resources-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr 1fr;
-      }
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
     }
 
-    @media (max-width: 768px) {
-      .mobile-menu-btn {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .nav-container {
-        padding: 0 20px;
-      }
-
-      h1 {
-        font-size: 36px;
-      }
-
-      h2 {
-        font-size: 32px;
-      }
-
-      .hero {
-        padding: 120px 20px 60px;
-      }
-
-      .hero-description {
-        font-size: 18px;
-      }
-
-      .contact-section {
-        padding: 60px 20px;
-      }
-
-      .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .response-banner {
-        padding: 40px 20px;
-      }
-
-      .response-time {
-        font-size: 42px;
-      }
-
-      .faq-section {
-        padding: 0 20px 60px;
-      }
-
-      .resources-section {
-        padding: 60px 20px;
-      }
-
-      .cta-section {
-        padding: 60px 30px;
-        margin: 60px 20px;
-      }
-
-      .cta-section h2 {
-        font-size: 32px;
-      }
-
-      .cta-email {
-        font-size: 18px;
-        padding: 14px 28px;
-      }
-
-      .footer-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-      }
-    }
   </style>
 </head>
 <body>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">QuestController</div>
+      <button class="sidebar-close" id="sidebarClose">×</button>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="support.html"><span class="menu-icon">💬</span> Suporte</a></li>
+      <li><a href="privacy.html"><span class="menu-icon">🔒</span> Privacidade</a></li>
+      <li><a href="termos-serviços.html"><span class="menu-icon">📄</span> Termos</a></li>
+      <li><a href="index.html" class="sidebar-cta"><span class="menu-icon">←</span> Voltar</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">
+        © 2026 QuestController<br>
+        Desenvolvido por Micael Bardim & Arthur Almeida
+      </div>
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav id="navbar">
@@ -620,7 +704,7 @@
         <div class="contact-icon">📧</div>
         <h3>Email</h3>
         <p>Suporte técnico, dúvidas comerciais e feedback sobre o produto</p>
-        <a href="mailto:questcontroller.br@gmail.com" class="contact-link">Enviar Email</a>
+        <a href="/cdn-cgi/l/email-protection#49383c2c3a3d2a26273d3b2625252c3b672b3b092e24282025672a2624" class="contact-link">Enviar Email</a>
       </div>
 
       <div class="contact-card">
@@ -684,7 +768,7 @@
     <div class="faq-item">
       <div class="faq-question">Como reportar bugs ou problemas técnicos?</div>
       <div class="faq-answer">
-        Para reportar problemas técnicos, envie um email detalhado para questcontroller.br@gmail.com 
+        Para reportar problemas técnicos, envie um email detalhado para <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4c3d39293f382f2322383e232020293e622e3e0c2b212d2520622f2321">[email&#160;protected]</a> 
         incluindo: modelo do dispositivo, versão do sistema operacional, descrição do problema e 
         passos para reproduzir o erro. Nossa equipe responderá em até 48 horas úteis.
       </div>
@@ -793,8 +877,8 @@
       Nossa equipe de suporte está pronta para ajudar com qualquer dúvida ou 
       problema que você possa ter.
     </p>
-    <a href="mailto:questcontroller.br@gmail.com" class="cta-email">
-      questcontroller.br@gmail.com
+    <a href="/cdn-cgi/l/email-protection#3647435345425559584244595a5a534418544476515b575f5a1855595b" class="cta-email">
+      <span class="__cf_email__" data-cfemail="9feeeafaecebfcf0f1ebedf0f3f3faedb1fdeddff8f2fef6f3b1fcf0f2">[email&#160;protected]</span>
     </a>
   </div>
 
@@ -825,7 +909,7 @@
       <div class="footer-column">
         <h4>Legal</h4>
         <a href="privacy.html">Privacidade</a>
-        <a href="termos-servicos.html">Termos de Serviço</a>
+        <a href="termos-serviços.html">Termos de Serviço</a>
         <a href="#">Conformidade</a>
         <a href="#">Contato</a>
       </div>
@@ -835,18 +919,3 @@
       <div>Desenvolvido por Micael Bardim & Arthur Almeida</div>
     </div>
   </footer>
-
-  <script>
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-  </script>
-
-</body>
-</html>

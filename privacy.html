@@ -2,354 +2,770 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Política de Privacidade — QuestController</title>
+  <title>Política de Privacidade – QuestController</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="icon.png" type="image/x-icon">
   <style>
-    * {
+* {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0a0e1a;
-      color: #e4e7eb;
-      line-height: 1.8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    .bg-gradient {
+    /* Navigation */
+    nav {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 50%, #0a0e1a 100%);
-      z-index: -2;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e5e7eb;
+      z-index: 1000;
+      transition: all 0.3s ease;
     }
 
-    .grid-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      z-index: -1;
-      opacity: 0.5;
+    nav.scrolled {
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
-    header {
-      padding: 80px 20px 40px;
-      text-align: center;
-      position: relative;
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo-nav {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a1a;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 35px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #4b5563;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #1a1a1a;
     }
 
     .back-link {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      border-radius: 10px;
-      color: #3b82f6;
-      text-decoration: none;
-      font-weight: 600;
+      padding: 8px 20px;
+      background: transparent;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-weight: 500;
       transition: all 0.3s ease;
     }
 
     .back-link:hover {
-      background: rgba(59, 130, 246, 0.2);
-      transform: translateX(-4px);
+      border-color: #1a1a1a;
+      color: #1a1a1a;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #1a1a1a;
+      padding: 5px;
+      z-index: 1001;
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Sidebar */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+      transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1002;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    .mobile-sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 32px;
+      cursor: pointer;
+      padding: 5px;
+      line-height: 1;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .sidebar-close:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 0;
+    }
+
+    .sidebar-menu li {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-menu a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .sidebar-menu a:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      padding-left: 35px;
+    }
+
+    .sidebar-menu a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #ffffff;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-menu a:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar-cta {
+      margin: 25px;
+      padding: 16px 0;
+      background: #ffffff;
+      color: #1a1a1a !important;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar-cta:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+      padding-left: 25px !important;
+    }
+
+    .sidebar-cta::before {
+      display: none;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 25px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-footer-text {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 150px 40px 80px;
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #f3f4f6;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 25px;
+      letter-spacing: 0.3px;
     }
 
     h1 {
-      font-size: 48px;
+      font-size: 56px;
       font-weight: 800;
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 15px;
+      color: #1a1a1a;
+      line-height: 1.1;
+      margin-bottom: 25px;
+      letter-spacing: -2px;
     }
 
-    .subtitle {
-      font-size: 18px;
-      color: #94a3b8;
+    .hero-description {
+      font-size: 20px;
+      color: #6b7280;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
     }
 
-    main {
+    /* Content Section */
+    .content-section {
       max-width: 900px;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 80px 40px;
     }
 
-    .content-card {
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 20px;
-      padding: 50px;
-      backdrop-filter: blur(10px);
-    }
-
-    .intro {
+    .content-intro {
       font-size: 18px;
-      color: #cbd5e1;
-      margin-bottom: 40px;
-      padding: 25px;
-      background: rgba(59, 130, 246, 0.05);
-      border-left: 4px solid #3b82f6;
-      border-radius: 8px;
+      color: #4b5563;
+      line-height: 1.8;
+      margin-bottom: 60px;
+      padding: 30px;
+      background: #f9fafb;
+      border-radius: 12px;
+      border-left: 4px solid #1a1a1a;
     }
 
     h2 {
-      font-size: 28px;
-      color: #3b82f6;
-      margin-top: 40px;
-      margin-bottom: 20px;
+      font-size: 32px;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: #1a1a1a;
+      margin-top: 60px;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
     }
 
     h2:first-of-type {
       margin-top: 0;
     }
 
-    h2::before {
-      content: '';
-      width: 4px;
-      height: 28px;
-      background: linear-gradient(180deg, #3b82f6, #06b6d4);
-      border-radius: 2px;
-    }
-
     p {
       font-size: 17px;
-      color: #cbd5e1;
+      color: #4b5563;
+      line-height: 1.8;
       margin-bottom: 20px;
     }
 
     ul {
       list-style: none;
-      margin: 20px 0;
+      margin: 25px 0;
     }
 
     li {
       font-size: 17px;
-      color: #cbd5e1;
-      padding: 12px 0 12px 30px;
+      color: #4b5563;
+      padding: 12px 0;
+      padding-left: 30px;
       position: relative;
+      line-height: 1.7;
     }
 
     li::before {
-      content: '→';
+      content: '•';
       position: absolute;
-      left: 0;
-      color: #3b82f6;
+      left: 10px;
+      color: #1a1a1a;
       font-weight: bold;
+      font-size: 20px;
     }
 
-    .highlight {
-      background: rgba(59, 130, 246, 0.1);
-      padding: 3px 8px;
-      border-radius: 4px;
-      color: #60a5fa;
+    strong {
+      color: #1a1a1a;
       font-weight: 600;
     }
 
+    /* Contact Box */
     .contact-box {
-      margin-top: 40px;
-      padding: 30px;
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      margin-top: 60px;
+      padding: 40px;
+      background: #f9fafb;
       border-radius: 16px;
+      border: 1px solid #e5e7eb;
     }
 
     .contact-box h3 {
-      color: #3b82f6;
-      font-size: 22px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 15px;
+    }
+
+    .contact-box p {
       margin-bottom: 15px;
     }
 
     .contact-box a {
-      color: #60a5fa;
+      color: #1a1a1a;
       text-decoration: none;
       font-weight: 600;
-      transition: color 0.3s ease;
+      transition: opacity 0.3s ease;
     }
 
     .contact-box a:hover {
-      color: #3b82f6;
+      opacity: 0.7;
     }
 
+    /* Update Date */
     .update-date {
       text-align: center;
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid rgba(59, 130, 246, 0.1);
-      color: #64748b;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid #e5e7eb;
+      color: #6b7280;
       font-size: 14px;
     }
 
+    /* Footer */
+    footer {
+      background: #f9fafb;
+      padding: 80px 40px 40px;
+      border-top: 1px solid #e5e7eb;
+      margin-top: 80px;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 60px;
+    }
+
+    .footer-brand h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .footer-brand p {
+      color: #6b7280;
+      line-height: 1.7;
+    }
+
+    .footer-column h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #6b7280;
+      text-decoration: none;
+      margin-bottom: 12px;
+      font-size: 15px;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+      color: #1a1a1a;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .footer-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
-      .back-link {
-        position: relative;
-        top: 0;
-        left: 0;
-        margin-bottom: 20px;
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-container {
+        padding: 0 20px;
+      }
+
+      .mobile-sidebar {
+        width: 280px;
       }
 
       h1 {
         font-size: 36px;
       }
 
-      .content-card {
-        padding: 30px 25px;
+      h2 {
+        font-size: 26px;
       }
 
-      h2 {
-        font-size: 24px;
+      .hero {
+        padding: 120px 20px 60px;
+      }
+
+      .hero-description {
+        font-size: 18px;
+      }
+
+      .content-section {
+        padding: 60px 20px;
+      }
+
+      .content-intro {
+        padding: 25px 20px;
+      }
+
+      .contact-box {
+        padding: 30px 20px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-gradient"></div>
-  <div class="grid-overlay"></div>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
 
-  <header>
-    <a href="index.html" class="back-link">
-      ← Voltar
-    </a>
-    <h1>Política de Privacidade</h1>
-    <p class="subtitle">Como protegemos suas informações</p>
-  </header>
-
-  <main>
-    <div class="content-card">
-      <div class="intro">
-        Esta Política de Privacidade estabelece de forma clara e transparente como o <span class="highlight">QuestController</span> 
-        coleta, utiliza, armazena e protege as informações dos usuários, em conformidade com as melhores 
-        práticas de segurança e privacidade de dados.
-      </div>
-
-      <h2>Informações Coletadas</h2>
-      <p>
-        O QuestController coleta exclusivamente informações técnicas e operacionais necessárias para 
-        o funcionamento adequado do aplicativo. As informações coletadas incluem:
-      </p>
-      <ul>
-        <li>Status de conexão de rede do dispositivo</li>
-        <li>Nível e estado de carga da bateria</li>
-        <li>Identificador técnico anônimo do dispositivo</li>
-        <li>Métricas de desempenho do sistema</li>
-      </ul>
-      <p>
-        <strong>Importante:</strong> Não coletamos dados pessoais identificáveis, informações de localização 
-        precisa, conteúdo de comunicações ou dados biométricos.
-      </p>
-
-      <h2>Finalidade do Uso das Informações</h2>
-      <p>
-        As informações técnicas coletadas são utilizadas exclusivamente para:
-      </p>
-      <ul>
-        <li>Exibir status em tempo real do dispositivo ao usuário</li>
-        <li>Otimizar o desempenho e estabilidade do aplicativo</li>
-        <li>Diagnosticar e resolver problemas técnicos</li>
-        <li>Melhorar a experiência do usuário</li>
-      </ul>
-      <p>
-        Garantimos que <span class="highlight">nenhum dado coletado é vendido, compartilhado com terceiros 
-        ou utilizado para fins publicitários</span>.
-      </p>
-
-      <h2>Compartilhamento de Dados</h2>
-      <p>
-        O QuestController não compartilha, vende ou transfere dados pessoais ou técnicos para terceiros 
-        em nenhuma circunstância. Todas as informações permanecem exclusivamente dentro do ecossistema 
-        do aplicativo.
-      </p>
-      <p>
-        <strong>Exceções:</strong> Podemos divulgar informações apenas quando legalmente obrigados por 
-        ordem judicial ou para proteger direitos, segurança ou propriedade.
-      </p>
-
-      <h2>Armazenamento e Segurança</h2>
-      <p>
-        Implementamos medidas técnicas e organizacionais adequadas para proteger as informações contra 
-        acesso não autorizado, alteração, divulgação ou destruição:
-      </p>
-      <ul>
-        <li>Criptografia de dados em trânsito e em repouso</li>
-        <li>Controles de acesso rigorosos</li>
-        <li>Monitoramento contínuo de segurança</li>
-        <li>Atualizações regulares de segurança</li>
-      </ul>
-
-      <h2>Retenção de Dados</h2>
-      <p>
-        Mantemos as informações técnicas apenas pelo tempo necessário para cumprir as finalidades descritas 
-        nesta política. Dados temporários são automaticamente excluídos quando não são mais necessários.
-      </p>
-
-      <h2>Direitos do Usuário</h2>
-      <p>
-        Os usuários têm direito a:
-      </p>
-      <ul>
-        <li>Solicitar informações sobre dados coletados</li>
-        <li>Requerer a exclusão de dados armazenados</li>
-        <li>Opor-se ao processamento de dados</li>
-        <li>Obter esclarecimentos sobre esta política</li>
-      </ul>
-
-      <h2>Conformidade Legal</h2>
-      <p>
-        Esta política está em conformidade com:
-      </p>
-      <ul>
-        <li>Lei Geral de Proteção de Dados (LGPD) - Brasil</li>
-        <li>Políticas e diretrizes da Meta para desenvolvedores</li>
-        <li>Melhores práticas internacionais de privacidade</li>
-      </ul>
-
-      <h2>Alterações na Política</h2>
-      <p>
-        Reservamo-nos o direito de atualizar esta Política de Privacidade periodicamente para refletir 
-        mudanças em nossas práticas ou por exigências legais. Recomendamos a revisão regular desta página.
-      </p>
-      <p>
-        Alterações significativas serão comunicadas através do aplicativo ou por meio eletrônico.
-      </p>
-
-      <div class="contact-box">
-        <h3>Contato e Dúvidas</h3>
-        <p>
-          Para questões relacionadas à privacidade, solicitações de dados ou esclarecimentos sobre esta política:
-        </p>
-        <p>
-          📧 <strong>Email:</strong> <a href="mailto:questcontroller.br@gmail.com">questcontroller.br@gmail.com</a>
-        </p>
-      </div>
-
-      <div class="update-date">
-        <p>Última atualização: Fevereiro de 2026</p>
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">QuestController</div>
+      <button class="sidebar-close" id="sidebarClose">×</button>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="index.html"><span class="menu-icon">🏠</span> Início</a></li>
+      <li><a href="support.html"><span class="menu-icon">💬</span> Suporte</a></li>
+      <li><a href="termos-serviços.html"><span class="menu-icon">📄</span> Termos</a></li>
+      <li><a href="privacy.html"><span class="menu-icon">🔒</span> Privacidade</a></li>
+      <li><a href="index.html" class="sidebar-cta"><span class="menu-icon">←</span> Voltar</a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-text">
+        © 2026 QuestController<br>
+        Desenvolvido por Micael Bardim & Arthur Almeida
       </div>
     </div>
-  </main>
+  </div>
+
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo-nav">QuestController</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="support.html">Suporte</a></li>
+        <li><a href="termos-serviços.html">Termos</a></li>
+        <li><a href="index.html" class="back-link">← Voltar</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="menuBtn">☰</button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="hero-tag">PRIVACIDADE</span>
+    <h1>Política de Privacidade</h1>
+    <p class="hero-description">
+      Como coletamos, utilizamos e protegemos suas informações
+    </p>
+  </section>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <div class="content-intro">
+      Esta Política de Privacidade descreve como o <strong>QuestController</strong> 
+      coleta, utiliza e protege as informações técnicas necessárias para o funcionamento 
+      do aplicativo, em conformidade com a LGPD e melhores práticas de segurança.
+    </div>
+
+    <h2>Informações Coletadas</h2>
+    <p>
+      O QuestController coleta exclusivamente informações técnicas e operacionais 
+      necessárias para o funcionamento do aplicativo:
+    </p>
+    <ul>
+      <li>Status de conexão de rede do dispositivo</li>
+      <li>Nível e estado de carga da bateria</li>
+      <li>Identificador técnico anônimo do dispositivo</li>
+      <li>Métricas de desempenho do sistema</li>
+    </ul>
+    <p>
+      <strong>Não coletamos</strong> dados pessoais identificáveis, informações de localização 
+      precisa, conteúdo de comunicações ou dados biométricos.
+    </p>
+
+    <h2>Uso das Informações</h2>
+    <p>
+      As informações técnicas são utilizadas exclusivamente para:
+    </p>
+    <ul>
+      <li>Exibir status em tempo real do dispositivo</li>
+      <li>Otimizar desempenho e estabilidade do aplicativo</li>
+      <li>Diagnosticar e resolver problemas técnicos</li>
+      <li>Melhorar a experiência do usuário</li>
+    </ul>
+    <p>
+      <strong>Garantimos</strong> que nenhum dado é vendido, compartilhado com terceiros 
+      ou utilizado para fins publicitários.
+    </p>
+
+    <h2>Compartilhamento de Dados</h2>
+    <p>
+      O QuestController não compartilha, vende ou transfere dados para terceiros. 
+      Todas as informações permanecem exclusivamente dentro do ecossistema do aplicativo.
+    </p>
+    <p>
+      Podemos divulgar informações apenas quando legalmente obrigados por ordem judicial 
+      ou para proteger direitos e segurança.
+    </p>
+
+    <h2>Segurança</h2>
+    <p>
+      Implementamos medidas técnicas adequadas para proteger as informações:
+    </p>
+    <ul>
+      <li>Criptografia de dados em trânsito e em repouso</li>
+      <li>Controles de acesso rigorosos</li>
+      <li>Monitoramento contínuo de segurança</li>
+      <li>Atualizações regulares de segurança</li>
+    </ul>
+
+    <h2>Direitos do Usuário</h2>
+    <p>
+      Você tem direito a:
+    </p>
+    <ul>
+      <li>Solicitar informações sobre dados coletados</li>
+      <li>Requerer exclusão de dados armazenados</li>
+      <li>Opor-se ao processamento de dados</li>
+      <li>Obter esclarecimentos sobre esta política</li>
+    </ul>
+
+    <h2>Alterações na Política</h2>
+    <p>
+      Esta política pode ser atualizada periodicamente. Recomendamos a revisão regular desta página. 
+      Alterações significativas serão comunicadas através do aplicativo.
+    </p>
+
+    <div class="contact-box">
+      <h3>Contato</h3>
+      <p>
+        Para questões relacionadas à privacidade ou solicitações de dados:
+      </p>
+      <p>
+        <strong>Email:</strong> <a href="mailto:questcontroller.br@gmail.com">questcontroller.br@gmail.com</a>
+      </p>
+    </div>
+
+    <div class="update-date">
+      Última atualização: Fevereiro de 2026
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>QuestController</h3>
+        <p>
+          Solução profissional de gestão para dispositivos Meta Quest. 
+          Desenvolvido para empresas que exigem controle, segurança e eficiência.
+        </p>
+      </div>
+      <div class="footer-column">
+        <h4>Produto</h4>
+        <a href="index.html">Visão Geral</a>
+        <a href="index.html#features">Recursos</a>
+        <a href="support.html">Preços</a>
+      </div>
+      <div class="footer-column">
+        <h4>Empresa</h4>
+        <a href="support.html">Sobre Nós</a>
+        <a href="support.html">Suporte</a>
+        <a href="support.html">Documentação</a>
+      </div>
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <a href="privacy.html">Privacidade</a>
+        <a href="termos-serviços.html">Termos de Serviço</a>
+        <a href="support.html">Contato</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 QuestController. Todos os direitos reservados.</div>
+      <div>Desenvolvido por Micael Bardim & Arthur Almeida</div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const overlay = document.getElementById('overlay');
+
+    menuBtn.addEventListener('click', () => {
+      mobileSidebar.classList.add('active');
+      overlay.classList.add('active');
+    });
+
+    sidebarClose.addEventListener('click', () => {
+      mobileSidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      mobileSidebar.classList.remove('active');
+      overlay.classList.remove('active');
+    });
+
+    // Close sidebar when clicking on a link
+    const sidebarLinks = mobileSidebar.querySelectorAll('a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileSidebar.classList.remove('active');
+        overlay.classList.remove('active');
+      });
+    });
+  </script>
 
 </body>
 </html>
